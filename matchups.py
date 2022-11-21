@@ -164,10 +164,10 @@ def get_optimized_records(league_id, last_week):
 def print_standings(teams):
     rank = 1
     for team in sorted(teams, key=lambda x: (x['wins'], x['optimized_total_points']), reverse=False):
-        print(f"{rank}. {team['team_name']} ({team['wins']}, {team['losses']}) PF: {team['optimized_total_points']}")
+        print(f"{rank}. {team['team_name']} ({team['wins']}, {team['losses']}) PF: {round(team['optimized_total_points'], 2)}")
         rank+= 1
 
-print_standings(get_optimized_records(LEAGUE_ID, 11))
+print_standings(get_optimized_records(LEAGUE_ID, 10))
 
 
 players_connection.commit()
