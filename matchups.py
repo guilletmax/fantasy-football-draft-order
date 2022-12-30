@@ -163,12 +163,31 @@ def get_optimized_records(league_id, last_week):
 
 def print_standings(teams):
     rank = 1
+    print()
+    print('based on record')
     for team in sorted(teams, key=lambda x: (x['wins'], x['optimized_total_points']), reverse=False):
         print(f"{rank}. {team['team_name']} ({team['wins']}, {team['losses']}) PF: {round(team['optimized_total_points'], 2)}")
         rank+= 1
+    rank = 1
+    print()
+    print('based on points scored')
+    for team in sorted(teams, key=lambda x: (x['optimized_total_points']), reverse=False):
+        print(f"{rank}. {team['team_name']} ({team['wins']}, {team['losses']}) PF: {round(team['optimized_total_points'], 2)}")
+        rank+= 1
 
-print_standings(get_optimized_records(LEAGUE_ID, 10))
+print_standings(get_optimized_records(LEAGUE_ID, 13))
 
+def get_league_profile_pics(league_id):
+    response = requests.get(f"https://api.sleeper.app/v1/league/{league_id}/users")
+    avatars = []
+    for team in json.loads(response.text):
+        avatars.append(team['avatar'])
+    
+    print(avatars)
+    for avatar in avatars:
+        response = requests.get(f"https://sleepercdn.com/avatars/{avatar}")
+        with open(f"C://Users//guill//OneDrive//Documents//fantasy football//avatars//{avatar}.png", 'wb') as f:
+            f.write(response.content)
 
 players_connection.commit()
 players_connection.close()
